@@ -6,5 +6,8 @@
 </head>
 <body>
     <h1 th:text="${message}">Hello World</h1>
+    <div th:replace="~{fragment/card :: card(${mrBeast})}"></div>
+    <hr>
+    <div th:replace="~{fragment/card :: card(${cyprien})}"></div>
 </body>
 </html>

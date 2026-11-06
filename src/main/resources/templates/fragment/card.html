@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>Card</title>
+</head>
+<body>
+    <div th:fragment="card(card)" class="card">
+        <center>
+
+        <img th:src="${card.thumbnailUrl}" th:alt="${card.name}" src="https://yt3.googleusercontent.com/ytc/AIdro_kKiE1Vpd2RZMv057AzKdHBtqkL7ksZhZ4Huwfbr9ngUyU=s176-c-k-c0x00ffffff-no-rj-mo" alt="a photo of a ">
+        </center>
+        <h1 th:text="${card.name}">Name</h1>
+        <p th:text="${#numbers.formatInteger(card.subscriberCount, 1, 'WHITESPACE')} + ' abonnés'">0 abonnés</p>
+        <h4 th:text="${card.description}">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit accusamus laudantium tempore harum sequi iste delectus eius rerum omnis pariatur explicabo tenetur doloremque distinctio consectetur rem, nemo deleniti. Illo, dicta!</h4>
+
+
+        <style>
+            .card {
+                background-color: black;
+                width: 20vh;
+                height: 40vh;
+                border-radius: 12px;
+                overflow: hidden;
+                margin: 0;
+            }
+
+            .card img {
+                width: 100%;
+                object-fit: cover;
+                display: block;
+            }
+
+            .card h1 {
+                color: white;
+                text-overflow: ellipsis;
+            }
+
+            .card p {
+                color: white;
+            }
+
+            .card h4 {
+                -webkit-box-orient: vertical;
+                display: -webkit-box;
+                color: white;
+                -webkit-line-clamp: 12;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                word-break: break-word;
+            }
+
+        </style>
+    </div>
+</body>
+</html>
