@@ -1,107 +1,130 @@
 <!DOCTYPE html>
 <html lang="fr" xmlns:th="http://www.thymeleaf.org">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Inscription | TubeMastery</title>
 
-    <link rel="stylesheet" th:href="@{/css/register.css}">
+    <link rel="stylesheet" th:href="@{/css/auth.css}">
 </head>
 
 <body>
 
-<main class="auth-container">
-
+<div class="auth-container">
     <div class="auth-card">
 
-        <h1>TubeMastery</h1>
-        <h2>Créer un compte</h2>
+        <!-- Logo -->
+        <div class="auth-logo">
+            <span class="auth-logo-icon">▶</span>
+            TubeMastery
+        </div>
 
-        <p>Rejoins la communauté TubeMastery !</p>
+        <!-- Titre -->
+        <h1>Rejoins TubeMastery</h1>
+        <p>Crée ton compte et commence ton aventure dès maintenant.</p>
 
-        <div class="error-message"
-             th:if="${errorMessage}"
+        <!-- Erreur générale -->
+        <div th:if="${errorMessage}"
+             class="error"
              th:text="${errorMessage}">
         </div>
 
+        <!-- Formulaire d'inscription -->
         <form th:action="@{/auth/register}"
               th:object="${registerRequest}"
               method="post">
 
+            <!-- Nom d'utilisateur -->
             <div class="form-group">
-                <label for="username">Pseudo</label>
+                <label for="username">Nom d'utilisateur</label>
 
-                <input type="text"
-                       id="username"
-                       th:field="*{username}"
-                       autocomplete="username"
-                       required>
+                <input
+                    type="text"
+                    id="username"
+                    th:field="*{username}"
+                    placeholder="Choisis un nom d'utilisateur"
+                    autocomplete="username"
+                    required>
 
-                <small th:if="${#fields.hasErrors('username')}"
-                       th:errors="*{username}">
-                </small>
+                <span class="field-error"
+                      th:if="${#fields.hasErrors('username')}"
+                      th:errors="*{username}">
+                </span>
             </div>
 
+            <!-- Adresse email -->
             <div class="form-group">
-                <label for="email">Adresse e-mail</label>
+                <label for="email">Adresse email</label>
 
-                <input type="email"
-                       id="email"
-                       th:field="*{email}"
-                       autocomplete="email"
-                       required>
+                <input
+                    type="email"
+                    id="email"
+                    th:field="*{email}"
+                    placeholder="exemple@email.com"
+                    autocomplete="email"
+                    required>
 
-                <small th:if="${#fields.hasErrors('email')}"
-                       th:errors="*{email}">
-                </small>
+                <span class="field-error"
+                      th:if="${#fields.hasErrors('email')}"
+                      th:errors="*{email}">
+                </span>
             </div>
 
+            <!-- Mot de passe -->
             <div class="form-group">
                 <label for="password">Mot de passe</label>
 
-                <input type="password"
-                       id="password"
-                       th:field="*{password}"
-                       autocomplete="new-password"
-                       required>
+                <input
+                    type="password"
+                    id="password"
+                    th:field="*{password}"
+                    placeholder="Choisis un mot de passe"
+                    autocomplete="new-password"
+                    required>
 
-                <small th:if="${#fields.hasErrors('password')}"
-                       th:errors="*{password}">
-                </small>
+                <span class="field-error"
+                      th:if="${#fields.hasErrors('password')}"
+                      th:errors="*{password}">
+                </span>
             </div>
 
+            <!-- Confirmation du mot de passe -->
             <div class="form-group">
-                <label for="confirmPassword">
-                    Confirmer le mot de passe
-                </label>
+                <label for="confirmPassword">Confirmer le mot de passe</label>
 
-                <input type="password"
-                       id="confirmPassword"
-                       th:field="*{confirmPassword}"
-                       autocomplete="new-password"
-                       required>
+                <input
+                    type="password"
+                    id="confirmPassword"
+                    th:field="*{confirmPassword}"
+                    placeholder="Répète ton mot de passe"
+                    autocomplete="new-password"
+                    required>
 
-                <small th:if="${#fields.hasErrors('confirmPassword')}"
-                       th:errors="*{confirmPassword}">
-                </small>
+                <span class="field-error"
+                      th:if="${#fields.hasErrors('confirmPassword')}"
+                      th:errors="*{confirmPassword}">
+                </span>
             </div>
 
+            <!-- Bouton -->
             <button type="submit">
                 Créer mon compte
             </button>
 
         </form>
 
-        <p class="auth-link">
+        <!-- Pied de page -->
+        <div class="auth-footer">
             Tu possèdes déjà un compte ?
-            <a th:href="@{/auth/login}">Se connecter</a>
-        </p>
+            <br>
+            <a th:href="@{/auth/login}">
+                Se connecter
+            </a>
+        </div>
 
     </div>
-
-</main>
+</div>
 
 </body>
 </html>
