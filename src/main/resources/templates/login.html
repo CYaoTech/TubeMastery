@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Connexion | TubeMastery</title>
+
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+</head>
+
+<body>
+
+<main class="auth-container">
+
+    <div class="auth-card">
+
+        <h1>TubeMastery</h1>
+        <h2>Bienvenue !</h2>
+
+        <p>Connecte-toi pour retrouver ta collection.</p>
+
+        <div class="success-message"
+             th:if="${successMessage}"
+             th:text="${successMessage}">
+        </div>
+
+        <div class="error-message" th:if="${param.error}">
+            Pseudo ou mot de passe incorrect.
+        </div>
+
+        <div class="success-message" th:if="${param.logout}">
+            Tu as été déconnecté.
+        </div>
+
+        <form th:action="@{/auth/login}" method="post">
+
+            <div class="form-group">
+                <label for="username">Pseudo</label>
+
+                <input type="text"
+                       id="username"
+                       name="username"
+                       autocomplete="username"
+                       required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Mot de passe</label>
+
+                <input type="password"
+                       id="password"
+                       name="password"
+                       autocomplete="current-password"
+                       required>
+            </div>
+
+            <button type="submit">
+                Se connecter
+            </button>
+
+        </form>
+
+        <p class="auth-link">
+            Tu n'as pas encore de compte ?
+            <a th:href="@{/auth/register}">Créer un compte</a>
+        </p>
+
+    </div>
+
+</main>
+
+</body>
+</html>
