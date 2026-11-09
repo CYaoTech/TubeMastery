@@ -13,10 +13,11 @@ import org.springframework.web.client.RestClient;
 @Service
 public class YoutubeServiceFinal {
     List<String> keyWord = List.of("gaming","music","podcast","fortnite","challenge","money");
-    private final String key = "AIzaSyB50M8MeBf2YrovxgBf9HR9vkqIi2V-AAI";
+    private final String key;
     private final RestClient restClient;
 
     public YoutubeServiceFinal(@Value("${youtube.api.key}") String key) {
+        this.key = key;
         this.restClient = RestClient.create("https://www.googleapis.com/youtube/v3");
     }
     private static Card randomChannel() {
