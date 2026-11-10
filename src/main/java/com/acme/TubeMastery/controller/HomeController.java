@@ -62,7 +62,7 @@ public class HomeController {
             log.error("Impossible de tirer une carte", e);
             redirectAttributes.addFlashAttribute(
                 "errorMessage",
-                "Impossible de récupérer une carte pour le moment (API YouTube indisponible)."
+                "Impossible de récupérer une carte pour le moment (scraping YouTube en échec)."
             );
         }
         return "redirect:/home";

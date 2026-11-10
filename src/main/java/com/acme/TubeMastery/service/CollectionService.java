@@ -62,7 +62,7 @@ public class CollectionService {
 
         String handle = missing.get(ThreadLocalRandom.current().nextInt(missing.size()));
 
-        // L'API YouTube n'est appelée que la première fois qu'une carte est tirée
+        // Le scraping YouTube n'est lancé que la première fois qu'une carte est tirée
         Card card = cardRepository.findByHandle(handle)
             .orElseGet(() -> cardRepository.save(youtubeService.getYoutuber(handle)));
 

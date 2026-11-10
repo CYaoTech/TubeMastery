@@ -5,12 +5,11 @@
     <title>Card</title>
 </head>
 <body>
-    <!-- Styles : /css/home.css -->
     <article th:fragment="card(card)" class="card"
              th:classappend="${card.id != null and card.id == newCardId} ? 'card-new'"
              tabindex="0" role="button"
              th:aria-label="'Voir la carte ' + ${card.name}">
-        <img th:src="${card.thumbnailUrl}" th:alt="${card.name}" alt="" loading="lazy">
+        <img th:src="${card.thumbnailUrl}" th:alt="${card.name}" alt="" loading="lazy" referrerpolicy="no-referrer">
         <div class="card-body">
             <h2 th:text="${card.name}">Name</h2>
             <p class="card-subs"
