@@ -5,6 +5,8 @@ import com.acme.TubeMastery.service.UserService;
 
 import jakarta.validation.Valid;
 
+import java.security.Principal;
+
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,7 +30,11 @@ public class AuthController {
     }
 
     @GetMapping("/register")
-    public String showRegisterForm(Model model) {
+    public String showRegisterForm(Model model, Principal principal) {
+
+        if (principal != null) {
+            return "redirect:/home";
+        }
 
         model.addAttribute(
             "registerRequest",
@@ -91,7 +97,12 @@ public class AuthController {
     }
 
     @GetMapping("/login")
-    public String showLoginForm() {
+    public String showLoginForm(Principal principal) {
+
+        if (principal != null) {
+            return "redirect:/home";
+        }
+
         return "login";
     }
 }

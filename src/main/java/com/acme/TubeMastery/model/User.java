@@ -7,7 +7,13 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.acme.TubeMastery.service.Card;
+
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
@@ -44,4 +50,14 @@ public class User {
     @Min(value = 0, message = "Les TubeCoins ne peuvent pas être négatifs")
     @Column(nullable = false)
     private Integer tubecoin = 0;
+
+    @ManyToMany
+    @JoinTable(
+        name = "user_cards",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "card_id")
+    )
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private List<Card> cards = new ArrayList<>();
 }

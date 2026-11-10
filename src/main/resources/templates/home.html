@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ma collection | TubeMastery</title>
+    <link rel="stylesheet" th:href="@{/css/home.css}">
+</head>
+<body>
+
+<header class="topbar">
+    <a class="logo" th:href="@{/home}"><span class="logo-icon">▶</span> TubeMastery</a>
+    <div class="topbar-right">
+        <span class="coins"><span th:text="${tubecoin}">0</span> TubeCoins</span>
+        <span class="username" th:text="${username}">joueur</span>
+        <form th:action="@{/auth/logout}" method="post">
+            <button type="submit" class="btn btn-ghost">Déconnexion</button>
+        </form>
+    </div>
+</header>
+
+<main>
+
+        <div class="heading">
+            <div>
+                <h1>Ma collection</h1>
+                <p class="muted">
+                    <span th:text="${#lists.size(cards)}">0</span>
+
+                    <span th:text="${#lists.size(cards) > 1} ? 'cartes' : 'carte'">cartes</span>
+                </p>
+            </div>
+        </div>
+
+    <div th:if="${successMessage}" class="alert success" th:text="${successMessage}"></div>
+    <div th:if="${errorMessage}" class="alert error" th:text="${errorMessage}"></div>
+
+    <p class="empty" th:if="${#lists.isEmpty(cards)}">
+        Tu n'as encore aucune carte. Clique sur « Obtenir une carte » pour commencer ta collection !
+    </p>
+
+    <section class="grid" th:unless="${#lists.isEmpty(cards)}">
+        <th:block th:each="c : ${cards}">
+            <article th:replace="~{fragment/card :: card(${c})}"></article>
+        </th:block>
+    </section>
+</main>
+
+<!-- Modal : la carte cliquée en grand (rempli par /js/home.js) -->
+<dialog id="card-modal" class="card-modal" aria-labelledby="modal-name">
+    <button type="button" class="modal-close" aria-label="Fermer">&times;</button>
+    <img id="modal-img" src="" alt="">
+    <div class="modal-body">
+        <h2 id="modal-name"></h2>
+        <p id="modal-subs" class="card-subs"></p>
+        <p id="modal-desc" class="modal-desc"></p>
+    </div>
+</dialog>
+
+<script th:src="@{/js/home.js}" defer></script>
+
+</body>
+</html>
