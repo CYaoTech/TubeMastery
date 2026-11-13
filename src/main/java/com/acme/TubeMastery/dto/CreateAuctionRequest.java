@@ -1,0 +1,9 @@
+package com.acme.TubeMastery.dto;
+
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+
+public record CreateAuctionRequest(
+        @NotNull Long cardId,
+        @Min(value = 1, message = "Le prix de départ est de 1 TubeCoin minimum") int startPrice,
+        @Min(value = 1, message = "Durée invalide") int hours) {}
