@@ -17,8 +17,9 @@ import java.util.concurrent.ThreadLocalRandom;
 @Service
 public class PackService {
 
-    public static final Duration PACK_INTERVAL = Duration.ofMinutes(10);
+    public static final Duration PACK_INTERVAL = Duration.ofSeconds(30);
     public static final int CARDS_PER_PACK = 4;
+    public static final int MAX_PACKS = 10;
 
     private final UserRepository userRepository;
     private final CardRepository cardRepository;
@@ -48,10 +49,19 @@ public class PackService {
             user.setPacksUpdatedAt(now);
             return;
         }
+        if (user.getPacks() >= MAX_PACKS) {
+            // Stock plein : le compteur ne tourne pas, il repart à l'ouverture d'un paquet
+            user.setPacks(MAX_PACKS);
+            user.setPacksUpdatedAt(now);
+            return;
+        }
         long gained = Duration.between(user.getPacksUpdatedAt(), now).dividedBy(PACK_INTERVAL);
         if (gained > 0) {
-            user.setPacks(user.getPacks() + (int) gained);
-            user.setPacksUpdatedAt(user.getPacksUpdatedAt().plus(PACK_INTERVAL.multipliedBy(gained)));
+            int total = (int) Math.min(MAX_PACKS, user.getPacks() + gained);
+            user.setPacks(total);
+            user.setPacksUpdatedAt(total >= MAX_PACKS
+                ? now
+                : user.getPacksUpdatedAt().plus(PACK_INTERVAL.multipliedBy(gained)));
         }
     }
 

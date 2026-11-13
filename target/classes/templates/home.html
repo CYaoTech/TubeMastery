@@ -12,6 +12,7 @@
     <a class="logo" th:href="@{/home}"><span class="logo-icon">▶</span> TubeMastery</a>
     <div class="topbar-right">
         <a class="btn" th:href="@{/packs}">Ouvre un deck</a>
+        <span class="coins" title="Youtubeurs disponibles"><span th:text="${#numbers.formatInteger(availableYoutubers, 1, 'WHITESPACE')}">0</span> youtubeurs</span>
         <span class="coins"><span id="coin-count" th:text="${tubecoin}">0</span> TubeCoins</span>
         <span class="username" th:text="${username}">joueur</span>
         <form th:action="@{/auth/logout}" method="post">

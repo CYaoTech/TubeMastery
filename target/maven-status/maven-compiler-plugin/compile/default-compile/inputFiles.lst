@@ -4,6 +4,7 @@
 /home/cytech/TubeMastery/src/main/java/com/acme/TubeMastery/config/PasswordConfig.java
 /home/cytech/TubeMastery/src/main/java/com/acme/TubeMastery/config/SecurityConfig.java
 /home/cytech/TubeMastery/src/main/java/com/acme/TubeMastery/controller/AuthController.java
+/home/cytech/TubeMastery/src/main/java/com/acme/TubeMastery/controller/GlobalModelAdvice.java
 /home/cytech/TubeMastery/src/main/java/com/acme/TubeMastery/controller/HomeController.java
 /home/cytech/TubeMastery/src/main/java/com/acme/TubeMastery/controller/PackController.java
 /home/cytech/TubeMastery/src/main/java/com/acme/TubeMastery/dto/RegisterRequest.java
