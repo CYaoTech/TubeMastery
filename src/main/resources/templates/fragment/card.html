@@ -10,6 +10,8 @@
              th:attr="data-card-id=${card.id}"
              tabindex="0" role="button"
              th:aria-label="'Voir la carte ' + ${card.name}">
+        <span class="rarity-badge" th:classappend="'rarity-' + ${#strings.toLowerCase(card.rarityCode)}"
+              th:text="${card.rarityCode}" th:title="${card.rarityLabel}">B</span>
         <img th:src="${card.thumbnailUrl}" th:alt="${card.name}" alt="" loading="lazy" referrerpolicy="no-referrer">
         <div class="card-body">
             <h2 th:text="${card.name}">Name</h2>
