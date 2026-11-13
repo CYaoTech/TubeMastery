@@ -635,3 +635,17 @@ main {
 .card[hidden] {
     display: none;
 }
+
+/* ---------- Enchères ---------- */
+.auction-modal { max-width: 360px; width: 90vw; padding: 1.5rem; }
+.auction-form { display: flex; flex-direction: column; gap: .9rem; }
+.auction-form label { display: flex; flex-direction: column; gap: .3rem; font-size: .9rem; }
+.auction-form input, .auction-form select { padding: .5rem; border-radius: 8px; border: 1px solid #555; background: inherit; color: inherit; }
+.auction-card { position: relative; }
+.auction-info { display: flex; flex-direction: column; gap: .4rem; padding: 0 1rem 1rem; }
+.auction-price { font-weight: 700; font-size: 1.1rem; }
+.auction-timer { font-variant-numeric: tabular-nums; }
+.auction-timer.urgent { color: #e5484d; font-weight: 700; }
+.bid-form { display: flex; gap: .4rem; }
+.bid-form input { flex: 1; min-width: 0; padding: .4rem; border-radius: 8px; border: 1px solid #555; background: inherit; color: inherit; }
+.bid-error { color: #e5484d; font-size: .85rem; margin: 0; }

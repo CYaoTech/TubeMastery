@@ -159,3 +159,53 @@ if (discardAll) {
         }
     });
 }
+
+
+// ---------- Mise aux enchères ----------
+const auctionModal = document.getElementById('auction-modal');
+const auctionForm = document.getElementById('auction-form');
+
+document.getElementById('modal-auction').addEventListener('click', () => {
+    if (!currentCard) return;
+    document.getElementById('auction-card-id').value = currentCard.dataset.cardId;
+    document.getElementById('auction-card-name').textContent =
+        currentCard.querySelector('h2').textContent;
+    document.getElementById('auction-error').hidden = true;
+    modal.close();
+    auctionModal.showModal();
+});
+
+auctionModal.querySelector('.modal-close').addEventListener('click', () => auctionModal.close());
+auctionModal.addEventListener('click', event => {
+    if (event.target === auctionModal) auctionModal.close();
+});
+
+auctionForm.addEventListener('submit', async event => {
+    event.preventDefault();
+    const error = document.getElementById('auction-error');
+    error.hidden = true;
+    const button = auctionForm.querySelector('button[type="submit"]');
+    button.disabled = true;
+    try {
+        const response = await fetch(auctionForm.action, {
+            method: 'POST',
+            body: new URLSearchParams(new FormData(auctionForm)),
+        });
+        if (!response.ok) {
+            const data = await response.json().catch(() => ({}));
+            throw new Error(data.error || 'Impossible de créer l\'enchère.');
+        }
+        // La carte quitte la collection : on la retire de la grille
+        if (currentCard) {
+            currentCard.remove();
+            currentCard = null;
+            updateCount();
+        }
+        auctionModal.close();
+    } catch (e) {
+        error.textContent = e.message;
+        error.hidden = false;
+    } finally {
+        button.disabled = false;
+    }
+});

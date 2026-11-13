@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragment/head :: head('Enchères')}"></head>
+<body th:attr="data-username=${username}">
+
+<header th:replace="~{fragment/topbar :: topbar('auctions')}"></header>
+
+<main>
+    <div class="heading">
+        <div>
+            <h1>Enchères</h1>
+            <p class="muted">Une mise dans la dernière minute remet le compteur à 1 minute.</p>
+        </div>
+    </div>
+
+    <p class="empty" id="auctions-empty" th:if="${#lists.isEmpty(auctions)}">Aucune enchère en cours.</p>
+
+    <section class="grid" id="auctions-grid">
+        <article class="card auction-card" th:each="a : ${auctions}"
+                 th:attr="data-auction-id=${a.id()},data-ends-at=${a.endsAt()},data-now=${a.serverNow()},data-seller=${a.seller()}">
+            <span class="rarity-badge" th:classappend="'rarity-' + ${#strings.toLowerCase(a.rarityCode())}"
+                  th:text="${a.rarityCode()}">B</span>
+            <img th:src="${a.thumbnailUrl()}" th:alt="${a.cardName()}" alt="" loading="lazy" referrerpolicy="no-referrer">
+            <div class="card-body">
+                <h2 th:text="${a.cardName()}">Nom</h2>
+                <p class="card-subs" th:if="${a.subscriberCount() != null}"
+                   th:text="${#numbers.formatInteger(a.subscriberCount(), 1, 'WHITESPACE')} + ' abonnés'">0 abonnés</p>
+                <p class="card-desc">Vendeur : <span th:text="${a.seller()}"></span></p>
+            </div>
+            <div class="auction-info">
+                <span class="auction-price"><span class="js-price" th:text="${a.currentPrice()}">1</span> TubeCoins</span>
+                <span class="muted js-bidder" th:text="${a.highestBidder() != null} ? 'Meilleure mise : ' + ${a.highestBidder()} : 'Aucune mise'"></span>
+                <span class="auction-timer js-timer">--:--</span>
+                <form class="bid-form" th:unless="${a.seller() == username}" th:action="@{/auctions/{id}/bid(id=${a.id()})}" method="post">
+                    <input type="number" name="amount" min="1" step="1" required aria-label="Ta mise">
+                    <button th:replace="~{fragment/button :: submit('Miser')}"></button>
+                </form>
+                <span class="muted" th:if="${a.seller() == username}">Ta carte</span>
+                <p class="bid-error js-error" hidden></p>
+            </div>
+        </article>
+    </section>
+</main>
+
+<!-- Modèle JS pour les enchères apparues après le chargement : la page est simplement rechargée -->
+<script th:src="@{/js/auctions.js}" defer></script>
+
+</body>
+</html>
