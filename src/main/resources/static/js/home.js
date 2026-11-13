@@ -18,6 +18,12 @@ function openCard(card) {
 
     document.getElementById('modal-card-id').value = card.dataset.cardId;
 
+    const channel = document.getElementById('modal-channel');
+    channel.hidden = !card.dataset.handle;
+    if (card.dataset.handle) {
+        channel.href = 'https://www.youtube.com/@' + encodeURIComponent(card.dataset.handle);
+    }
+
     flip.classList.remove('flipped');
     modal.showModal();
 }
@@ -46,7 +52,7 @@ discardForm.addEventListener('submit', async event => {
     event.preventDefault();
     if (!currentCard) return;
 
-    const button = discardForm.querySelector('button');
+    const button = discardForm.querySelector('button[type="submit"]');
     button.disabled = true;
     try {
         const response = await fetch(discardForm.action, {
@@ -60,9 +66,7 @@ discardForm.addEventListener('submit', async event => {
         currentCard.remove();
         currentCard = null;
 
-        const count = document.querySelectorAll('.grid .card').length;
-        document.getElementById('card-count').textContent = count;
-        document.getElementById('card-count-label').textContent = count > 1 ? 'cartes' : 'carte';
+        updateCount();
         modal.close();
     } catch (e) {
         alert('Impossible de défausser la carte pour le moment.');
@@ -81,3 +85,77 @@ flip.addEventListener('keydown', event => {
         flip.classList.toggle('flipped');
     }
 });
+
+// ---------- Filtre par rareté ----------
+// Aucune rareté sélectionnée = toutes les cartes affichées.
+
+const rarityButtons = document.querySelectorAll('.rarity-btn');
+const discardAll = document.getElementById('discard-all');
+const discardAllForm = document.getElementById('discard-all-form');
+
+function selectedRarities() {
+    return [...rarityButtons]
+        .filter(b => b.getAttribute('aria-pressed') === 'true')
+        .map(b => b.dataset.rarity);
+}
+
+function updateCount() {
+    const count = document.querySelectorAll('.grid .card').length;
+    document.getElementById('card-count').textContent = count;
+    document.getElementById('card-count-label').textContent = count > 1 ? 'cartes' : 'carte';
+}
+
+function applyFilter() {
+    const selected = selectedRarities();
+    document.querySelectorAll('.grid .card').forEach(card => {
+        card.hidden = selected.length > 0 && !selected.includes(card.dataset.rarity);
+    });
+    if (discardAll) {
+        discardAll.disabled = selected.length === 0;
+        discardAll.title = selected.length === 0
+            ? 'Sélectionne au moins une rareté'
+            : 'Défausser toutes les cartes des raretés sélectionnées';
+    }
+}
+
+rarityButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        const pressed = button.getAttribute('aria-pressed') === 'true';
+        button.setAttribute('aria-pressed', String(!pressed));
+        applyFilter();
+    });
+});
+
+if (discardAll) {
+    discardAllForm.addEventListener('submit', async event => {
+        event.preventDefault();
+        const selected = selectedRarities();
+        if (selected.length === 0) return;
+
+        const targets = [...document.querySelectorAll('.grid .card')]
+            .filter(card => selected.includes(card.dataset.rarity));
+        if (targets.length === 0) {
+            alert('Aucune carte à défausser pour ces raretés.');
+            return;
+        }
+        if (!confirm('Défausser ' + targets.length + ' carte(s) contre ' + targets.length + ' TubeCoin(s) ?')) return;
+
+        discardAll.disabled = true;
+        try {
+            // Le formulaire fournit le jeton CSRF (ajouté par Thymeleaf)
+            const body = new URLSearchParams(new FormData(discardAllForm));
+            selected.forEach(r => body.append('rarities', r));
+            const response = await fetch(discardAllForm.action, { method: 'POST', body });
+            if (!response.ok) throw new Error('HTTP ' + response.status);
+            const data = await response.json();
+
+            document.getElementById('coin-count').textContent = data.tubecoin;
+            targets.forEach(card => card.remove());
+            updateCount();
+        } catch (e) {
+            alert('Impossible de défausser les cartes pour le moment.');
+        } finally {
+            applyFilter();
+        }
+    });
+}

@@ -535,3 +535,62 @@ main {
 @media (prefers-reduced-motion: reduce) {
     .flip-inner { transition: none; }
 }
+
+/* ---------- Filtre par rareté ---------- */
+
+.rarity-filter {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.rarity-filter-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+}
+
+.rarity-btn {
+    padding: 4px;
+    border: 2px solid transparent;
+    border-radius: 12px;
+    background: transparent;
+    cursor: pointer;
+    opacity: 0.55;
+    transition: opacity 0.15s, border-color 0.15s;
+}
+
+.rarity-btn:hover {
+    opacity: 0.85;
+}
+
+.rarity-btn[aria-pressed="true"] {
+    opacity: 1;
+    border-color: var(--color-text);
+}
+
+/* Le badge est positionné sur la carte ; ici il reste dans le flux du bouton */
+.rarity-btn .rarity-badge {
+    position: static;
+    display: block;
+    min-width: 44px;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+}
+
+.btn-discard:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.btn-discard:disabled:hover {
+    background: transparent;
+}
+
+.card[hidden] {
+    display: none;
+}

@@ -1,5 +1,6 @@
 com/acme/TubeMastery/model/ChannelPoolEntry$Status.class
 com/acme/TubeMastery/config/SecurityConfig.class
+com/acme/TubeMastery/service/CollectionService$BulkDiscard.class
 com/acme/TubeMastery/TubeMasteryApplication.class
 com/acme/TubeMastery/service/YoutubeServiceFinal.class
 com/acme/TubeMastery/service/ChannelPoolService.class
@@ -17,7 +18,6 @@ com/acme/TubeMastery/config/PasswordConfig.class
 com/acme/TubeMastery/dto/RegisterRequest.class
 com/acme/TubeMastery/service/Card.class
 com/acme/TubeMastery/service/CustomUserDetailsService.class
-com/acme/TubeMastery/service/CardCacheWarmer.class
 com/acme/TubeMastery/service/ChannelSeedService.class
 com/acme/TubeMastery/model/User.class
 com/acme/TubeMastery/controller/HomeController.class

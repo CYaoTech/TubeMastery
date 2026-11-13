@@ -86,10 +86,11 @@ public class PackService {
         boolean usePool = poolService.size() > 0;
         List<String> handles = collectionService.handles();
         List<Card> opened = new ArrayList<>();
-        for (int i = 0; i < CARDS_PER_PACK; i++) {
-            if (usePool) {
-                opened.add(poolService.drawCard());
-            } else {
+        if (usePool) {
+            // Les fiches encore jamais scrapées le sont ici, en parallèle
+            opened.addAll(poolService.drawCards(CARDS_PER_PACK));
+        } else {
+            for (int i = 0; i < CARDS_PER_PACK; i++) {
                 String handle = handles.get(ThreadLocalRandom.current().nextInt(handles.size()));
                 opened.add(cardRepository.findByHandle(handle)
                     .orElseGet(() -> cardRepository.save(youtubeService.getYoutuber(handle))));

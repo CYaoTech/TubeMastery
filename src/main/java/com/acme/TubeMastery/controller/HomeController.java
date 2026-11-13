@@ -1,6 +1,8 @@
 package com.acme.TubeMastery.controller;
 
 import java.security.Principal;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -53,6 +55,14 @@ public class HomeController {
         return collectionService.discardCard(principal.getName(), cardId)
             .map(coins -> ResponseEntity.ok(Map.of("tubecoin", coins)))
             .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    }
+
+    @PostMapping("/home/discard-rarities")
+    @ResponseBody
+    public Map<String, Integer> discardRarities(@RequestParam List<String> rarities, Principal principal) {
+        CollectionService.BulkDiscard result =
+            collectionService.discardByRarities(principal.getName(), new HashSet<>(rarities));
+        return Map.of("tubecoin", result.tubecoin(), "removed", result.removed());
     }
 
     @PostMapping("/home/draw")

@@ -15,9 +15,9 @@ public class GlobalModelAdvice {
         this.poolService = poolService;
     }
 
-    /** Nombre de youtubeurs actuellement disponibles (fiches en cache, tirables instantanément). */
+    /** Nombre de youtubeurs que l'on peut obtenir dans un paquet (vivier de chaînes non mortes). */
     @ModelAttribute("availableYoutubers")
     public long availableYoutubers() {
-        return poolService.cachedCount();
+        return poolService.size();
     }
 }

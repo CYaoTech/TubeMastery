@@ -8,13 +8,22 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import jakarta.annotation.PreDestroy;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
+import java.util.Set;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Tirage d'une carte dans le vivier de chaînes : on tire d'abord une rareté (pondérée),
- * puis une chaîne de cette rareté. La fiche n'est scrapée que la première fois.
+ * puis une chaîne de cette rareté. La fiche n'est scrapée et stockée que la première fois qu'elle sort dans un paquet.
  */
 @Service
 public class ChannelPoolService {
@@ -32,6 +41,8 @@ public class ChannelPoolService {
     private final ChannelPoolRepository poolRepository;
     private final CardRepository cardRepository;
     private final YoutubeServiceFinal youtubeService;
+    /** Les scrapings sont du pur I/O : un thread virtuel par fiche. */
+    private final ExecutorService executor = Executors.newVirtualThreadPerTaskExecutor();
 
     public ChannelPoolService(
             ChannelPoolRepository poolRepository,
@@ -46,39 +57,53 @@ public class ChannelPoolService {
         return poolRepository.countByStatusNot(ChannelPoolEntry.Status.DEAD);
     }
 
-    public long cachedCount() {
-        return poolRepository.countByStatus(ChannelPoolEntry.Status.OK);
-    }
-
     /**
-     * Tire une carte. On privilégie les cartes déjà en cache (instantané) ; le scraping
-     * à la demande n'a lieu que si le cache est vide (les chaînes introuvables sont marquées DEAD).
+     * Tire {@code count} cartes distinctes. Une chaîne déjà passée dans un paquet est lue en base ;
+     * les autres sont scrapées ici, en parallèle, puis stockées (premier tirage uniquement).
      */
-    public Card drawCard() {
-        Optional<Card> cached = drawCached();
-        if (cached.isPresent()) {
-            return cached.get();
-        }
-        for (int attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
-            ChannelPoolEntry entry = pickEntry(ChannelPoolEntry.Status.NEW)
-                .orElseThrow(() -> new IllegalStateException("Le vivier de chaînes est vide"));
-            Optional<Card> card = scrapeAndCache(entry);
-            if (card.isPresent()) {
-                return card.get();
+    public List<Card> drawCards(int count) {
+        List<Card> result = new ArrayList<>();
+        Set<String> seen = new HashSet<>();
+        for (int attempt = 0; attempt < MAX_ATTEMPTS && result.size() < count; attempt++) {
+            List<ChannelPoolEntry> entries = new ArrayList<>();
+            for (int i = result.size(); i < count; i++) {
+                Optional<ChannelPoolEntry> entry = pickEntry();
+                if (entry.isEmpty()) {
+                    throw new IllegalStateException("Le vivier de chaînes est vide");
+                }
+                if (seen.add(entry.get().getHandle())) {
+                    entries.add(entry.get());
+                }
             }
+            List<CompletableFuture<Optional<Card>>> futures = entries.stream()
+                .map(e -> CompletableFuture.supplyAsync(() -> resolve(e), executor))
+                .toList();
+            futures.stream().map(CompletableFuture::join).flatMap(Optional::stream).forEach(result::add);
         }
-        throw new IllegalStateException("Aucune chaîne utilisable trouvée après " + MAX_ATTEMPTS + " essais");
+        if (result.size() < count) {
+            throw new IllegalStateException("Pas assez de chaînes utilisables trouvées après " + MAX_ATTEMPTS + " essais");
+        }
+        return result;
     }
 
-    private Optional<Card> drawCached() {
-        for (int attempt = 0; attempt < 3; attempt++) {
-            Optional<Card> card = pickEntry(ChannelPoolEntry.Status.OK)
-                .flatMap(e -> cardRepository.findByHandle(e.getHandle().toLowerCase(Locale.ROOT)));
-            if (card.isPresent()) {
-                return card;
+    public Card drawCard() {
+        return drawCards(1).get(0);
+    }
+
+    /** Carte déjà stockée si la chaîne a déjà été tirée, sinon scraping et stockage. */
+    private Optional<Card> resolve(ChannelPoolEntry entry) {
+        if (entry.getStatus() == ChannelPoolEntry.Status.OK) {
+            Optional<Card> stored = cardRepository.findByHandle(entry.getHandle().toLowerCase(Locale.ROOT));
+            if (stored.isPresent()) {
+                return stored;
             }
         }
-        return Optional.empty();
+        return scrapeAndCache(entry);
+    }
+
+    @PreDestroy
+    void shutdown() {
+        executor.shutdown();
     }
 
     /** Scrape la fiche d'une chaîne du vivier et la met en cache ; vide (et DEAD) si introuvable. */
@@ -107,14 +132,14 @@ public class ChannelPoolService {
         return Optional.of(card);
     }
 
-    /** Chaîne du statut donné, rareté tirée au sort (repli sur n'importe quelle chaîne de ce statut). */
-    public Optional<ChannelPoolEntry> pickEntry(ChannelPoolEntry.Status status) {
+    /** Chaîne vivante au hasard, rareté tirée au sort (repli sur n'importe quelle chaîne si la tranche est vide). */
+    public Optional<ChannelPoolEntry> pickEntry() {
         int roll = ThreadLocalRandom.current().nextInt(1000);
         int tier = 0;
         for (int acc = WEIGHTS[0]; roll >= acc && tier < WEIGHTS.length - 1; acc += WEIGHTS[++tier]) {
             // avance jusqu'à la tranche tirée
         }
-        return poolRepository.findRandomInRange(status.name(), RANGES[tier][0], RANGES[tier][1])
-            .or(() -> poolRepository.findRandomByStatus(status.name()));
+        return poolRepository.findRandomAliveInRange(RANGES[tier][0], RANGES[tier][1])
+            .or(() -> poolRepository.findRandomAlive());
     }
 }

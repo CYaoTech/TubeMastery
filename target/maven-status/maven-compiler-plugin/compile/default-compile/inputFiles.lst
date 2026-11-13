@@ -14,7 +14,6 @@
 /home/cytech/TubeMastery/src/main/java/com/acme/TubeMastery/repository/ChannelPoolRepository.java
 /home/cytech/TubeMastery/src/main/java/com/acme/TubeMastery/repository/UserRepository.java
 /home/cytech/TubeMastery/src/main/java/com/acme/TubeMastery/service/Card.java
-/home/cytech/TubeMastery/src/main/java/com/acme/TubeMastery/service/CardCacheWarmer.java
 /home/cytech/TubeMastery/src/main/java/com/acme/TubeMastery/service/ChannelPoolService.java
 /home/cytech/TubeMastery/src/main/java/com/acme/TubeMastery/service/ChannelSeedService.java
 /home/cytech/TubeMastery/src/main/java/com/acme/TubeMastery/service/CollectionService.java

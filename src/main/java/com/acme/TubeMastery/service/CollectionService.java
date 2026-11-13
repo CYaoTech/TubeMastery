@@ -92,6 +92,19 @@ public class CollectionService {
         return Optional.of(user.getTubecoin());
     }
 
+    public record BulkDiscard(int removed, int tubecoin) {}
+
+    /** Défausse toutes les cartes des raretés données (1 TubeCoin par carte). */
+    @Transactional
+    public BulkDiscard discardByRarities(String username, java.util.Set<String> rarityCodes) {
+        User user = userRepository.findByUsername(username).orElseThrow();
+        int before = user.getCards().size();
+        user.getCards().removeIf(c -> rarityCodes.contains(c.getRarityCode()));
+        int removed = before - user.getCards().size();
+        user.setTubecoin(user.getTubecoin() + removed);
+        return new BulkDiscard(removed, user.getTubecoin());
+    }
+
     public List<String> handles() {
         return HANDLES;
     }

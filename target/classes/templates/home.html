@@ -34,6 +34,21 @@
             </div>
         </div>
 
+    <div class="rarity-filter" th:unless="${#lists.isEmpty(cards)}">
+        <div class="rarity-filter-buttons" role="group" aria-label="Filtrer par rareté">
+            <button type="button" class="rarity-btn" data-rarity="B" aria-pressed="false" title="Basique" aria-label="Basique"><span class="rarity-badge rarity-b">B</span></button>
+            <button type="button" class="rarity-btn" data-rarity="C" aria-pressed="false" title="Commun" aria-label="Commun"><span class="rarity-badge rarity-c">C</span></button>
+            <button type="button" class="rarity-btn" data-rarity="R" aria-pressed="false" title="Rare" aria-label="Rare"><span class="rarity-badge rarity-r">R</span></button>
+            <button type="button" class="rarity-btn" data-rarity="UR" aria-pressed="false" title="Ultra Rare" aria-label="Ultra Rare"><span class="rarity-badge rarity-ur">UR</span></button>
+            <button type="button" class="rarity-btn" data-rarity="L" aria-pressed="false" title="Légendaire" aria-label="Légendaire"><span class="rarity-badge rarity-l">L</span></button>
+            <button type="button" class="rarity-btn" data-rarity="M" aria-pressed="false" title="Mythique" aria-label="Mythique"><span class="rarity-badge rarity-m">M</span></button>
+        </div>
+        <form id="discard-all-form" th:action="@{/home/discard-rarities}" method="post">
+            <button type="submit" class="btn-discard" id="discard-all" disabled
+                    title="Sélectionne au moins une rareté">🗑️ <span>Tout défausser</span></button>
+        </form>
+    </div>
+
     <div th:if="${successMessage}" class="alert success" th:text="${successMessage}"></div>
     <div th:if="${errorMessage}" class="alert error" th:text="${errorMessage}"></div>
 

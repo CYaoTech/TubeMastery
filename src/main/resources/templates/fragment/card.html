@@ -7,7 +7,7 @@
 <body>
     <article th:fragment="card(card)" class="card"
              th:classappend="${card.id != null and card.id == newCardId} ? 'card-new'"
-             th:attr="data-card-id=${card.id}"
+             th:attr="data-card-id=${card.id},data-rarity=${card.rarityCode},data-handle=${card.handle}"
              tabindex="0" role="button"
              th:aria-label="'Voir la carte ' + ${card.name}">
         <span class="rarity-badge" th:classappend="'rarity-' + ${#strings.toLowerCase(card.rarityCode)}"

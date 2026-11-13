@@ -334,7 +334,48 @@ main {
 .modal-actions {
     margin-top: 1rem;
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-auction {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.5rem 0.9rem;
+    border: 1px solid rgba(255, 190, 70, 0.6);
+    border-radius: 8px;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+}
+
+.btn-auction:hover {
+    background: rgba(255, 190, 70, 0.15);
+}
+
+.btn-channel {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin: 6px 0 4px;
+    padding: 0.25rem 0.7rem;
+    font-size: 0.9rem;
+    border: 1px solid rgba(90, 160, 255, 0.55);
+    border-radius: 8px;
+    color: #6cb0ff;
+    text-decoration: underline;
+}
+
+.btn-channel:hover {
+    background: rgba(90, 160, 255, 0.15);
+    color: #8cc2ff;
+}
+
+.btn-channel[hidden] {
+    display: none;
 }
 
 .btn-discard {
@@ -534,4 +575,63 @@ main {
 
 @media (prefers-reduced-motion: reduce) {
     .flip-inner { transition: none; }
+}
+
+/* ---------- Filtre par rareté ---------- */
+
+.rarity-filter {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.rarity-filter-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+}
+
+.rarity-btn {
+    padding: 4px;
+    border: 2px solid transparent;
+    border-radius: 12px;
+    background: transparent;
+    cursor: pointer;
+    opacity: 0.55;
+    transition: opacity 0.15s, border-color 0.15s;
+}
+
+.rarity-btn:hover {
+    opacity: 0.85;
+}
+
+.rarity-btn[aria-pressed="true"] {
+    opacity: 1;
+    border-color: var(--color-text);
+}
+
+/* Le badge est positionné sur la carte ; ici il reste dans le flux du bouton */
+.rarity-btn .rarity-badge {
+    position: static;
+    display: block;
+    min-width: 44px;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+}
+
+.btn-discard:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.btn-discard:disabled:hover {
+    background: transparent;
+}
+
+.card[hidden] {
+    display: none;
 }

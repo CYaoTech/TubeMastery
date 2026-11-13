@@ -15,11 +15,11 @@ public interface ChannelPoolRepository extends JpaRepository<ChannelPoolEntry, S
 
     long countByStatus(ChannelPoolEntry.Status status);
 
-    /** Chaîne au hasard de ce statut dont les abonnés sont dans [min, max[ (null compté comme 0). */
-    @Query(value = "SELECT * FROM channel_pool WHERE status = :status "
+    /** Chaîne vivante (non DEAD) au hasard dont les abonnés sont dans [min, max[ (null compté comme 0). */
+    @Query(value = "SELECT * FROM channel_pool WHERE status <> 'DEAD' "
         + "AND COALESCE(subscriber_count, 0) >= :min AND COALESCE(subscriber_count, 0) < :max "
         + "ORDER BY RANDOM() LIMIT 1", nativeQuery = true)
-    Optional<ChannelPoolEntry> findRandomInRange(String status, long min, long max);
+    Optional<ChannelPoolEntry> findRandomAliveInRange(long min, long max);
 
     @Query(value = "SELECT * FROM channel_pool WHERE status = :status ORDER BY RANDOM() LIMIT 1", nativeQuery = true)
     Optional<ChannelPoolEntry> findRandomByStatus(String status);
