@@ -31,13 +31,13 @@ public class UserService {
     @Transactional
     public User registerUser(RegisterRequest request) {
 
-        if (userRepository.existsByUsername(request.getUsername())) {
+        if (userRepository.existsByUsernameIgnoreCase(request.getUsername())) {
             throw new IllegalArgumentException(
                 "Ce pseudo est déjà utilisé."
             );
         }
 
-        if (userRepository.existsByEmail(request.getEmail())) {
+        if (userRepository.existsByEmailIgnoreCase(request.getEmail().trim())) {
             throw new IllegalArgumentException(
                 "Cette adresse e-mail est déjà utilisée."
             );
@@ -46,7 +46,7 @@ public class UserService {
         User user = new User();
 
         user.setUsername(request.getUsername());
-        user.setEmail(request.getEmail());
+        user.setEmail(request.getEmail().trim().toLowerCase());
 
         user.setPassword(
             passwordEncoder.encode(request.getPassword())
@@ -59,7 +59,7 @@ public class UserService {
 
     public boolean checkLogin(String username, String rawPassword) {
 
-        return userRepository.findByUsername(username)
+        return userRepository.findByUsernameIgnoreCase(username)
             .map(user -> passwordEncoder.matches(
                 rawPassword,
                 user.getPassword()
