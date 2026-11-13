@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Card</title>
+</head>
+<body>
+    <article th:fragment="card(card)" class="card"
+             th:classappend="${card.id != null and card.id == newCardId} ? 'card-new'"
+             th:attr="data-card-id=${card.id}"
+             tabindex="0" role="button"
+             th:aria-label="'Voir la carte ' + ${card.name}">
+        <img th:src="${card.thumbnailUrl}" th:alt="${card.name}" alt="" loading="lazy" referrerpolicy="no-referrer">
+        <div class="card-body">
+            <h2 th:text="${card.name}">Name</h2>
+            <p class="card-subs"
+               th:if="${card.subscriberCount != null}"
+               th:text="${#numbers.formatInteger(card.subscriberCount, 1, 'WHITESPACE')} + ' abonnés'">0 abonnés</p>
+            <p class="card-desc" th:text="${card.description}">Description</p>
+        </div>
+    </article>
+</body>
+</html>

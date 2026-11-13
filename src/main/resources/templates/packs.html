@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paquets | TubeMastery</title>
+    <link rel="stylesheet" th:href="@{/css/home.css}">
+</head>
+<body>
+
+<header class="topbar">
+    <a class="logo" th:href="@{/home}"><span class="logo-icon">▶</span> TubeMastery</a>
+    <div class="topbar-right">
+        <a class="btn btn-ghost" th:href="@{/home}">Ma collection</a>
+        <span class="coins"><span th:text="${tubecoin}">0</span> TubeCoins</span>
+        <span class="username" th:text="${username}">joueur</span>
+        <form th:action="@{/auth/logout}" method="post">
+            <button type="submit" class="btn btn-ghost">Déconnexion</button>
+        </form>
+    </div>
+</header>
+
+<main>
+    <div class="heading">
+        <div>
+            <h1>Paquets de cartes</h1>
+            <p class="muted">1 nouveau paquet toutes les 10 minutes</p>
+        </div>
+    </div>
+
+    <div th:if="${errorMessage}" class="alert error" th:text="${errorMessage}"></div>
+
+    <section class="pack-panel">
+        <p class="pack-count">
+            <span th:text="${packs}">0</span>
+            <span th:text="${packs > 1} ? 'paquets disponibles' : 'paquet disponible'">paquet disponible</span>
+        </p>
+
+        <form th:action="@{/packs/open}" method="post" id="open-form">
+            <button type="submit" class="btn pack-btn" th:disabled="${packs <= 0}">Ouvre un deck</button>
+        </form>
+
+        <p class="muted pack-timer">
+            Prochain paquet dans <strong id="pack-timer" th:attr="data-seconds=${secondsUntilNext}">--:--</strong>
+        </p>
+    </section>
+
+    <section th:if="${openedCards}">
+        <h2 class="pack-title">Clique sur les cartes pour les découvrir</h2>
+        <div class="pack-deal">
+            <div class="pack-slot" th:each="c, it : ${openedCards}" th:style="'--i:' + ${it.index}"
+                 role="button" tabindex="0" aria-label="Découvrir la carte">
+                <div class="pack-slot-inner">
+                    <div class="pack-slot-face pack-slot-back">
+                        <img th:src="@{/img/back.png}" alt="Dos de carte">
+                    </div>
+                    <div class="pack-slot-face pack-slot-front">
+                        <article th:replace="~{fragment/card :: card(${c})}"></article>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<script th:src="@{/js/packs.js}" defer></script>
+
+</body>
+</html>

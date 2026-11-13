@@ -1,0 +1,15 @@
+com/acme/TubeMastery/config/SecurityConfig.class
+com/acme/TubeMastery/TubeMasteryApplication.class
+com/acme/TubeMastery/service/YoutubeServiceFinal.class
+com/acme/TubeMastery/service/UserService.class
+com/acme/TubeMastery/repository/UserRepository.class
+com/acme/TubeMastery/service/CollectionService.class
+com/acme/TubeMastery/repository/CardRepository.class
+com/acme/TubeMastery/config/DevDataInitializer.class
+com/acme/TubeMastery/controller/AuthController.class
+com/acme/TubeMastery/config/PasswordConfig.class
+com/acme/TubeMastery/dto/RegisterRequest.class
+com/acme/TubeMastery/service/Card.class
+com/acme/TubeMastery/service/CustomUserDetailsService.class
+com/acme/TubeMastery/model/User.class
+com/acme/TubeMastery/controller/HomeController.class

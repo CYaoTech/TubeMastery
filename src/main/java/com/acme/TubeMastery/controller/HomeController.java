@@ -1,14 +1,19 @@
 package com.acme.TubeMastery.controller;
 
 import java.security.Principal;
+import java.util.Map;
 import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.acme.TubeMastery.model.User;
@@ -40,6 +45,14 @@ public class HomeController {
         model.addAttribute("cards", user.getCards());
         model.addAttribute("totalCards", collectionService.totalCards());
         return "home";
+    }
+
+    @PostMapping("/home/discard")
+    @ResponseBody
+    public ResponseEntity<Map<String, Integer>> discard(@RequestParam Long cardId, Principal principal) {
+        return collectionService.discardCard(principal.getName(), cardId)
+            .map(coins -> ResponseEntity.ok(Map.of("tubecoin", coins)))
+            .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
     @PostMapping("/home/draw")

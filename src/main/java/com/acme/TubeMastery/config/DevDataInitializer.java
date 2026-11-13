@@ -30,12 +30,12 @@ public class DevDataInitializer implements CommandLineRunner {
     /** Handle YouTube -> nombre de cartes de test. */
     private static final Map<String, Integer> TEST_CARDS = new LinkedHashMap<>();
     static {
-        TEST_CARDS.put("cyprien", 5);
-        TEST_CARDS.put("mrbeast", 5);
-        TEST_CARDS.put("inoxtag", 5);
+        TEST_CARDS.put("cyprien", 2);
+        TEST_CARDS.put("mrbeast", 2);
+        TEST_CARDS.put("inoxtag", 2);
         TEST_CARDS.put("squeezie", 5);
         TEST_CARDS.put("michou", 5);
-        TEST_CARDS.put("NormanFaitDesVideos", 5);
+        TEST_CARDS.put("normanfaitdesvideos", 5);
     }
 
     private final UserRepository userRepository;

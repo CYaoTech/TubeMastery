@@ -51,6 +51,12 @@ public class User {
     @Column(nullable = false)
     private Integer tubecoin = 0;
 
+    @Column
+    private Integer packs;
+
+    @Column
+    private java.time.Instant packsUpdatedAt;
+
     @ManyToMany
     @JoinTable(
         name = "user_cards",

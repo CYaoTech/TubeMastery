@@ -70,6 +70,32 @@ public class CollectionService {
         return Optional.of(card);
     }
 
+    @Transactional
+    public Optional<Integer> discardCard(String username, Long cardId) {
+        User user = userRepository.findByUsername(username).orElseThrow();
+
+        boolean removed = user.getCards().removeIf(new java.util.function.Predicate<Card>() {
+            private boolean done = false;
+            @Override
+            public boolean test(Card c) {
+                if (!done && cardId.equals(c.getId())) {
+                    done = true;
+                    return true;
+                }
+                return false;
+            }
+        });
+        if (!removed) {
+            return Optional.empty();
+        }
+        user.setTubecoin(user.getTubecoin() + 1);
+        return Optional.of(user.getTubecoin());
+    }
+
+    public List<String> handles() {
+        return HANDLES;
+    }
+
     public int totalCards() {
         return HANDLES.size();
     }
