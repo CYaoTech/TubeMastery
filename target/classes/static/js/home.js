@@ -18,6 +18,12 @@ function openCard(card) {
 
     document.getElementById('modal-card-id').value = card.dataset.cardId;
 
+    const channel = document.getElementById('modal-channel');
+    channel.hidden = !card.dataset.handle;
+    if (card.dataset.handle) {
+        channel.href = 'https://www.youtube.com/@' + encodeURIComponent(card.dataset.handle);
+    }
+
     flip.classList.remove('flipped');
     modal.showModal();
 }
@@ -46,7 +52,7 @@ discardForm.addEventListener('submit', async event => {
     event.preventDefault();
     if (!currentCard) return;
 
-    const button = discardForm.querySelector('button');
+    const button = discardForm.querySelector('button[type="submit"]');
     button.disabled = true;
     try {
         const response = await fetch(discardForm.action, {

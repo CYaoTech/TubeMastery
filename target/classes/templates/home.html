@@ -73,10 +73,14 @@
                 <img id="modal-img" src="" alt="" referrerpolicy="no-referrer">
                 <div class="modal-body">
                     <h2 id="modal-name"></h2>
+                    <a id="modal-channel" class="btn-channel" href="#" target="_blank" rel="noopener noreferrer"
+                       title="Ouvrir la chaîne YouTube" aria-label="Ouvrir la chaîne YouTube (nouvel onglet)">▶ <span>Chaîne</span></a>
                     <p id="modal-subs" class="card-subs"></p>
                     <p id="modal-desc" class="modal-desc"></p>
                     <form th:action="@{/home/discard}" method="post" class="modal-actions">
                         <input type="hidden" name="cardId" id="modal-card-id">
+                        <button type="button" class="btn-auction" id="modal-auction"
+                                title="Bientôt disponible" aria-label="Mettre cette carte aux enchères">🔨 <span>Enchères</span></button>
                         <button type="submit" class="btn-discard" title="Défausser contre 1 TubeCoin"
                                 aria-label="Défausser cette carte contre 1 TubeCoin">🗑️ <span>+1 TubeCoin</span></button>
                     </form>

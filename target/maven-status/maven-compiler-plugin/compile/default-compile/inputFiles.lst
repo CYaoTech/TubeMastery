@@ -1,6 +1,5 @@
 /home/cytech/TubeMastery/src/main/java/com/acme/TubeMastery/TubeMasteryApplication.java
 /home/cytech/TubeMastery/src/main/java/com/acme/TubeMastery/config/ChannelPoolInitializer.java
-/home/cytech/TubeMastery/src/main/java/com/acme/TubeMastery/config/DevDataInitializer.java
 /home/cytech/TubeMastery/src/main/java/com/acme/TubeMastery/config/PasswordConfig.java
 /home/cytech/TubeMastery/src/main/java/com/acme/TubeMastery/config/SecurityConfig.java
 /home/cytech/TubeMastery/src/main/java/com/acme/TubeMastery/controller/AuthController.java
