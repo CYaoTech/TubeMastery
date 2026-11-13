@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<body>
+    <!-- Usage : <header th:replace="~{fragment/topbar :: topbar('home')}"></header>
+         active = 'home' | 'packs' | 'auctions' (le lien de la page courante est mis en avant).
+         Attend dans le modèle : username, tubecoin, availableYoutubers (GlobalModelAdvice). -->
+    <header th:fragment="topbar(active)" class="topbar">
+        <a class="logo" th:href="@{/home}"><span class="logo-icon">▶</span> TubeMastery</a>
+        <div class="topbar-right">
+            <a th:replace="~{fragment/button :: link('Ma collection', '/home', ${active == 'home'})}"></a>
+            <a th:replace="~{fragment/button :: link('Ouvre un deck', '/packs', ${active == 'packs'})}"></a>
+            <a th:replace="~{fragment/button :: link('Enchères', '/auctions', ${active == 'auctions'})}"></a>
+            <span class="coins" title="Youtubeurs disponibles"><span th:text="${#numbers.formatInteger(availableYoutubers, 1, 'WHITESPACE')}">0</span> youtubeurs</span>
+            <span class="coins"><span id="coin-count" th:text="${tubecoin}">0</span> TubeCoins</span>
+            <span class="username" th:text="${username}">joueur</span>
+            <form th:replace="~{fragment/button :: logout}"></form>
+        </div>
+    </header>
+</body>
+</html>

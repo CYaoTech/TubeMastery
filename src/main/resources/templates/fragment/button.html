@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<body>
+    <!-- Lien-bouton de navigation. current = true : lien de la page courante (plein), sinon discret.
+         Usage : <a th:replace="~{fragment/button :: link('Enchères', '/auctions', ${active == 'auctions'})}"></a> -->
+    <a th:fragment="link(label, href, current)" class="btn" th:classappend="${!current} ? 'btn-ghost'"
+       th:href="@{${href}}" th:attr="aria-current=${current} ? 'page'" th:text="${label}">Lien</a>
+
+    <!-- Bouton d'envoi de formulaire.
+         Usage : <button th:replace="~{fragment/button :: submit('Miser')}"></button> -->
+    <button th:fragment="submit(label)" type="submit" class="btn" th:text="${label}">Valider</button>
+
+    <!-- Bouton d'action avec icône (défausser, enchères...). Les paramètres null sont omis.
+         css = classe du bouton (btn-discard, btn-auction), id = identifiant utilisé par le JS.
+         Usage : <button th:replace="~{fragment/button :: action('submit', 'btn-discard', null, '🗑️', 'Défausser', 'Info-bulle', null, false)}"></button> -->
+    <button th:fragment="action(type, css, id, icon, label, title, aria, disabled)"
+            th:type="${type}" th:class="${css}" th:id="${id}" th:title="${title}"
+            th:attr="aria-label=${aria}" th:disabled="${disabled}"><th:block th:text="${icon}"></th:block> <span th:text="${label}"></span></button>
+
+    <!-- Lien vers la chaîne YouTube ; son href est rempli par /js/home.js à l'ouverture du modal.
+         Usage : <a th:replace="~{fragment/button :: channel('modal-channel')}"></a> -->
+    <a th:fragment="channel(id)" th:id="${id}" class="btn-channel" href="#" target="_blank" rel="noopener noreferrer"
+       title="Ouvrir la chaîne YouTube" aria-label="Ouvrir la chaîne YouTube (nouvel onglet)">▶ <span>Chaîne</span></a>
+
+    <!-- Déconnexion (POST + jeton CSRF ajouté par Thymeleaf).
+         Usage : <form th:replace="~{fragment/button :: logout}"></form> -->
+    <form th:fragment="logout" th:action="@{/auth/logout}" method="post">
+        <button type="submit" class="btn btn-ghost">Déconnexion</button>
+    </form>
+</body>
+</html>

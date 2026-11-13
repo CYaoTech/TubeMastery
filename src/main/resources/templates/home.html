@@ -1,25 +1,9 @@
 <!DOCTYPE html>
 <html lang="fr" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ma collection | TubeMastery</title>
-    <link rel="stylesheet" th:href="@{/css/home.css}">
-</head>
+<head th:replace="~{fragment/head :: head('Ma collection')}"></head>
 <body>
 
-<header class="topbar">
-    <a class="logo" th:href="@{/home}"><span class="logo-icon">▶</span> TubeMastery</a>
-    <div class="topbar-right">
-        <a class="btn" th:href="@{/packs}">Ouvre un deck</a>
-        <span class="coins" title="Youtubeurs disponibles"><span th:text="${#numbers.formatInteger(availableYoutubers, 1, 'WHITESPACE')}">0</span> youtubeurs</span>
-        <span class="coins"><span id="coin-count" th:text="${tubecoin}">0</span> TubeCoins</span>
-        <span class="username" th:text="${username}">joueur</span>
-        <form th:action="@{/auth/logout}" method="post">
-            <button type="submit" class="btn btn-ghost">Déconnexion</button>
-        </form>
-    </div>
-</header>
+<header th:replace="~{fragment/topbar :: topbar('home')}"></header>
 
 <main>
 
@@ -44,8 +28,7 @@
             <button type="button" class="rarity-btn" data-rarity="M" aria-pressed="false" title="Mythique" aria-label="Mythique"><span class="rarity-badge rarity-m">M</span></button>
         </div>
         <form id="discard-all-form" th:action="@{/home/discard-rarities}" method="post">
-            <button type="submit" class="btn-discard" id="discard-all" disabled
-                    title="Sélectionne au moins une rareté">🗑️ <span>Tout défausser</span></button>
+            <button th:replace="~{fragment/button :: action('submit', 'btn-discard', 'discard-all', '🗑️', 'Tout défausser', 'Sélectionne au moins une rareté', null, true)}"></button>
         </form>
     </div>
 
@@ -73,16 +56,13 @@
                 <img id="modal-img" src="" alt="" referrerpolicy="no-referrer">
                 <div class="modal-body">
                     <h2 id="modal-name"></h2>
-                    <a id="modal-channel" class="btn-channel" href="#" target="_blank" rel="noopener noreferrer"
-                       title="Ouvrir la chaîne YouTube" aria-label="Ouvrir la chaîne YouTube (nouvel onglet)">▶ <span>Chaîne</span></a>
+                    <a th:replace="~{fragment/button :: channel('modal-channel')}"></a>
                     <p id="modal-subs" class="card-subs"></p>
                     <p id="modal-desc" class="modal-desc"></p>
                     <form th:action="@{/home/discard}" method="post" class="modal-actions">
                         <input type="hidden" name="cardId" id="modal-card-id">
-                        <button type="button" class="btn-auction" id="modal-auction"
-                                title="Bientôt disponible" aria-label="Mettre cette carte aux enchères">🔨 <span>Enchères</span></button>
-                        <button type="submit" class="btn-discard" title="Défausser contre 1 TubeCoin"
-                                aria-label="Défausser cette carte contre 1 TubeCoin">🗑️ <span>+1 TubeCoin</span></button>
+                        <button th:replace="~{fragment/button :: action('button', 'btn-auction', 'modal-auction', '🔨', 'Enchères', 'Mettre aux enchères', 'Mettre cette carte aux enchères', false)}"></button>
+                        <button th:replace="~{fragment/button :: action('submit', 'btn-discard', null, '🗑️', '+1 TubeCoin', 'Défausser contre 1 TubeCoin', 'Défausser cette carte contre 1 TubeCoin', false)}"></button>
                     </form>
                 </div>
             </div>
@@ -92,6 +72,9 @@
         </div>
     </div>
 </dialog>
+
+<!-- Modal : mise aux enchères de la carte ouverte -->
+<dialog th:replace="~{fragment/auction-form :: auctionForm}"></dialog>
 
 <script th:src="@{/js/home.js}" defer></script>
 

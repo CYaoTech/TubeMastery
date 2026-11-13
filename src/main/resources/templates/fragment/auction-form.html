@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<body>
+    <!-- Modal de mise aux enchères de la carte ouverte (géré par /js/home.js).
+         Usage : <dialog th:replace="~{fragment/auction-form :: auctionForm}"></dialog> -->
+    <dialog th:fragment="auctionForm" id="auction-modal" class="card-modal auction-modal" aria-labelledby="auction-title">
+        <button type="button" class="modal-close" aria-label="Fermer">&times;</button>
+        <form id="auction-form" th:action="@{/auctions/create}" method="post" class="auction-form">
+            <h2 id="auction-title">Mettre aux enchères</h2>
+            <p id="auction-card-name" class="muted"></p>
+            <input type="hidden" name="cardId" id="auction-card-id">
+            <label>Prix de départ (TubeCoins)
+                <input type="number" name="startPrice" min="1" step="1" value="1" required>
+            </label>
+            <label>Durée
+                <select name="hours">
+                    <option value="1">1 heure</option>
+                    <option value="3">3 heures</option>
+                    <option value="6">6 heures</option>
+                    <option value="12">12 heures</option>
+                    <option value="24">24 heures</option>
+                </select>
+            </label>
+            <p id="auction-error" class="alert error" hidden></p>
+            <button th:replace="~{fragment/button :: submit('Lancer l’enchère')}"></button>
+        </form>
+    </dialog>
+</body>
+</html>
