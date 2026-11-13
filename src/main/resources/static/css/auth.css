@@ -321,3 +321,56 @@ body {
         height: 46px;
     }
 }
+/* ---------- Champ mot de passe avec bouton "œil" ---------- */
+
+.password-wrapper {
+    position: relative;
+}
+
+.auth-card .password-wrapper input {
+    padding-right: 48px;
+}
+
+.auth-card .password-wrapper .toggle-password {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 48px;
+    height: 100%;
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-text-muted);
+    background: transparent;
+    border: none;
+    border-radius: 0 10px 10px 0;
+    box-shadow: none;
+    cursor: pointer;
+    transform: none;
+}
+
+.auth-card .password-wrapper .toggle-password:hover,
+.auth-card .password-wrapper .toggle-password:focus-visible {
+    color: var(--color-text);
+    background: transparent;
+    box-shadow: none;
+    transform: none;
+}
+
+.toggle-password svg {
+    width: 20px;
+    height: 20px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* œil barré quand le mot de passe est visible */
+.toggle-password .icon-hide { display: none; }
+.toggle-password.visible .icon-show { display: none; }
+.toggle-password.visible .icon-hide { display: block; }
