@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragment/head :: head('Modifier mon profil')}"></head>
+<body>
+
+<header th:replace="~{fragment/topbar :: topbar('profile')}"></header>
+
+<main>
+    <div class="heading">
+        <div>
+            <h1>Modifier mon profil</h1>
+            <p class="muted">Ta bio et ton avatar sont visibles par tous les joueurs.</p>
+        </div>
+    </div>
+
+    <form class="profile-form" th:action="@{/profile/{name}/edit(name=${username})}" th:object="${form}" method="post">
+
+        <label for="bio">Bio</label>
+        <textarea id="bio" th:field="*{bio}" rows="4" maxlength="500"
+                  placeholder="Parle un peu de toi..."></textarea>
+        <p class="bid-error" th:if="${#fields.hasErrors('bio')}" th:errors="*{bio}"></p>
+
+        <label for="avatarUrl">Avatar (adresse d'une image)</label>
+        <input type="text" id="avatarUrl" th:field="*{avatarUrl}"
+               placeholder="https://... (vide = avatar par défaut)">
+        <p class="bid-error" th:if="${#fields.hasErrors('avatarUrl')}" th:errors="*{avatarUrl}"></p>
+
+        <div class="profile-form-actions">
+            <button th:replace="~{fragment/button :: submit('Enregistrer')}"></button>
+            <a th:replace="~{fragment/button :: link('Annuler', '/profile/' + ${username}, false)}"></a>
+        </div>
+    </form>
+</main>
+
+</body>
+</html>

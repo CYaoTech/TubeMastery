@@ -12,7 +12,7 @@
             <a th:replace="~{fragment/button :: link('Enchères', '/auctions', ${active == 'auctions'})}"></a>
             <span class="coins" title="Youtubeurs disponibles"><span th:text="${#numbers.formatInteger(availableYoutubers, 1, 'WHITESPACE')}">0</span> youtubeurs</span>
             <span class="coins"><span id="coin-count" th:text="${tubecoin}">0</span> TubeCoins</span>
-            <span class="username" th:text="${username}">joueur</span>
+            <a class="username" th:href="@{/profile/{name}(name=${username})}" title="Mon profil" th:text="${username}">joueur</a>
             <form th:replace="~{fragment/button :: logout}"></form>
         </div>
     </header>

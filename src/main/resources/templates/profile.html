@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragment/head :: head('Profil')}"></head>
+<body>
+
+<header th:replace="~{fragment/topbar :: topbar('profile')}"></header>
+
+<main>
+    <div th:if="${successMessage}" class="alert success" th:text="${successMessage}"></div>
+
+    <section class="profile-header">
+        <img class="avatar"
+             th:src="${profile.avatarUrl != null} ? ${profile.avatarUrl} : @{/img/default-avatar.svg}"
+             alt="Avatar" referrerpolicy="no-referrer"
+             onerror="this.onerror=null; this.src='/img/default-avatar.svg'">
+        <div class="profile-info">
+            <h1 th:text="${owner.username}">pseudo</h1>
+            <p class="profile-bio" th:if="${profile.bio != null}" th:text="${profile.bio}">Bio</p>
+            <p class="muted" th:if="${profile.bio == null}">Aucune bio pour le moment.</p>
+            <p class="muted">
+                <span th:text="${#lists.size(cards)}">0</span>
+                <span th:text="${#lists.size(cards) > 1} ? 'cartes' : 'carte'">cartes</span>
+            </p>
+            <div class="profile-actions" th:if="${isOwner}">
+                <a th:replace="~{fragment/button :: link('Modifier mon profil', '/profile/' + ${owner.username} + '/edit', true)}"></a>
+                <a th:replace="~{fragment/button :: link('Gérer ma collection', '/home', false)}"></a>
+            </div>
+        </div>
+    </section>
+
+    <p class="empty" th:if="${#lists.isEmpty(cards)}">Ce joueur n'a encore aucune carte.</p>
+
+    <section class="grid" th:unless="${#lists.isEmpty(cards)}">
+        <th:block th:each="c : ${cards}">
+            <article th:replace="~{fragment/card :: card(${c})}"></article>
+        </th:block>
+    </section>
+</main>
+
+</body>
+</html>
