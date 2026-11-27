@@ -1,12 +1,11 @@
-package com.acme.TubeMastery.service;
+package com.acme.TubeMastery.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Transient;
+import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 @Entity
 @Data
@@ -20,6 +19,17 @@ public class Card {
         private String description;
         private String thumbnailUrl;
         private Long subscriberCount;
+
+        /** Catégories de la chaîne (N-N) : une carte peut en avoir plusieurs. */
+        @ManyToMany
+        @JoinTable(
+                name = "card_categories",
+                joinColumns = @JoinColumn(name = "card_id"),
+                inverseJoinColumns = @JoinColumn(name = "category_id")
+        )
+        @ToString.Exclude
+        @EqualsAndHashCode.Exclude
+        private List<Category> categories = new ArrayList<>();
 
         @Transient
         public String getRarityCode() {

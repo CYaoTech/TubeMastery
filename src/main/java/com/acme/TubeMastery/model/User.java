@@ -10,7 +10,6 @@ import jakarta.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.acme.TubeMastery.service.Card;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -66,4 +65,10 @@ public class User {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private List<Card> cards = new ArrayList<>();
+
+    /** Profil du joueur (relation 1-1, le profil porte la clé étrangère). */
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private UserProfile profile;
 }

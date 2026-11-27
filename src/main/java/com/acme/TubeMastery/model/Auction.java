@@ -1,6 +1,5 @@
 package com.acme.TubeMastery.model;
 
-import com.acme.TubeMastery.service.Card;
 
 import jakarta.persistence.*;
 

@@ -1,5 +1,6 @@
 package com.acme.TubeMastery.service;
 
+import com.acme.TubeMastery.model.Card;
 import com.acme.TubeMastery.model.ChannelPoolEntry;
 import com.acme.TubeMastery.repository.CardRepository;
 import com.acme.TubeMastery.repository.ChannelPoolRepository;

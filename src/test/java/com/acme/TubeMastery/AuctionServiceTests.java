@@ -8,7 +8,7 @@ import com.acme.TubeMastery.repository.CardRepository;
 import com.acme.TubeMastery.repository.UserRepository;
 import com.acme.TubeMastery.service.AuctionException;
 import com.acme.TubeMastery.service.AuctionService;
-import com.acme.TubeMastery.service.Card;
+import com.acme.TubeMastery.model.Card;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

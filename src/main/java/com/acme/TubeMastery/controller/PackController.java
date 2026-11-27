@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.acme.TubeMastery.service.Card;
+import com.acme.TubeMastery.model.Card;
 import com.acme.TubeMastery.service.CollectionService;
 import com.acme.TubeMastery.service.PackService;
 

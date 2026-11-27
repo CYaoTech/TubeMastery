@@ -2,6 +2,7 @@ package com.acme.TubeMastery.service;
 
 import com.acme.TubeMastery.dto.RegisterRequest;
 import com.acme.TubeMastery.model.User;
+import com.acme.TubeMastery.model.UserProfile;
 import com.acme.TubeMastery.repository.UserRepository;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -31,7 +32,7 @@ public class UserService {
     @Transactional
     public User registerUser(RegisterRequest request) {
 
-        if (userRepository.existsByUsernameIgnoreCase(request.getUsername())) {
+        if (userRepository.existsByUsernameIgnoreCase(request.getUsername().trim())) {
             throw new IllegalArgumentException(
                 "Ce pseudo est déjà utilisé."
             );
@@ -45,7 +46,7 @@ public class UserService {
 
         User user = new User();
 
-        user.setUsername(request.getUsername());
+        user.setUsername(request.getUsername().trim());
         user.setEmail(request.getEmail().trim().toLowerCase());
 
         user.setPassword(
@@ -53,6 +54,11 @@ public class UserService {
         );
 
         user.setTubecoin(0);
+
+        // Chaque nouveau joueur reçoit un profil vide (relation 1-1)
+        UserProfile profile = new UserProfile();
+        profile.setUser(user);
+        user.setProfile(profile);
 
         return userRepository.save(user);
     }

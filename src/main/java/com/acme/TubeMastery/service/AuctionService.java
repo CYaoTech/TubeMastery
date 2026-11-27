@@ -1,5 +1,6 @@
 package com.acme.TubeMastery.service;
 
+import com.acme.TubeMastery.model.Card;
 import com.acme.TubeMastery.dto.AuctionDto;
 import com.acme.TubeMastery.model.Auction;
 import com.acme.TubeMastery.model.Bid;

@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.acme.TubeMastery.model.User;
-import com.acme.TubeMastery.service.Card;
+import com.acme.TubeMastery.model.Card;
 import com.acme.TubeMastery.service.CollectionService;
 
 @Controller
