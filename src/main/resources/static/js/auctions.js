@@ -29,8 +29,17 @@ function apply(dto) {
     if (!card) return;
     card.dataset.endsAt = dto.endsAt;
     card.querySelector('.js-price').textContent = dto.currentPrice;
-    card.querySelector('.js-bidder').textContent =
-        dto.highestBidder ? 'Meilleure mise : ' + dto.highestBidder : 'Aucune mise';
+    const bidder = card.querySelector('.js-bidder');
+    if (dto.highestBidder) {
+        // Le pseudo reste un lien vers le profil du joueur
+        const link = document.createElement('a');
+        link.className = 'profile-link';
+        link.href = '/profile/' + encodeURIComponent(dto.highestBidder);
+        link.textContent = dto.highestBidder;
+        bidder.replaceChildren('Meilleure mise : ', link);
+    } else {
+        bidder.textContent = 'Aucune mise';
+    }
 }
 
 async function poll() {
