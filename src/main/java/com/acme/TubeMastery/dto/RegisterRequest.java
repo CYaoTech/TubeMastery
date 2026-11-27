@@ -26,4 +26,14 @@ public class RegisterRequest {
 
     @NotBlank(message = "Veuillez confirmer votre mot de passe")
     private String confirmPassword;
+
+    // On retire les espaces autour du pseudo et de l'email dès la saisie (avant la validation).
+    // Pas pour le mot de passe : un espace peut en faire partie.
+    public void setUsername(String username) {
+        this.username = username == null ? null : username.trim();
+    }
+
+    public void setEmail(String email) {
+        this.email = email == null ? null : email.trim();
+    }
 }
